@@ -10,17 +10,19 @@ const lines = fs.readFileSync('input.txt', { encoding: 'utf-8' }).split('\r\n');
 console.log(getFinalSumByAdding());
 
 
+
 function getFinalSumByAdding() {
 
-    let allNumbersRefined = [];
-
-    lines.map(line => allNumbersRefined.push(Number(getEachLineNumber(line))))
-
-    return allNumbersRefined.reduce((accumulator, currentValue) => {
+    return getNumsFromRawData().reduce((accumulator, currentValue) => {
         return accumulator + currentValue;
     }, 0);
 }
 
+function getNumsFromRawData(){
+    let allNumbersRefined = [];
+    lines.map(line => allNumbersRefined.push(Number(getEachLineNumber(line))));
+    return allNumbersRefined;
+}
 
 function getEachLineNumber(line) {
 

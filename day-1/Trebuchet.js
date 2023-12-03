@@ -19,9 +19,7 @@ function getFinalSumByAdding() {
 }
 
 function getNumsFromRawData(){
-    let allNumbersRefined = [];
-    lines.map(line => allNumbersRefined.push(Number(getEachLineNumber(line))));
-    return allNumbersRefined;
+    return lines.map(line => Number(getEachLineNumber(line)));
 }
 
 function getEachLineNumber(line) {

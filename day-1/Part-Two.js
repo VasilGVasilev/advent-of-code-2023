@@ -2,47 +2,52 @@ const fs = require('fs');
 
 const lines = fs.readFileSync('input.txt', { encoding: 'utf-8' }).split('\r\n');
 
-let wordToDigit = {
-    "one": 1,
-    "two": 2,
-    "three": 3,
-    "four": 4,
-    "five": 5,
-    "six": 6,
-    "seven": 7,
-    "eight": 8,
-    "nine": 9
-};
 
-let sum = 0;
+console.log(getFinalSumByAdding());
 
-for (let line of lines) {
 
-    const regex = /(\d|one|two|three|four|five|six|seven|eight|nine)/g;
-    const matches = line.match(regex);
-    
+function getFinalSumByAdding() {
 
-    let firstNumber = matches[0];
-
-    if (firstNumber in wordToDigit) {
-        firstNumber = wordToDigit[firstNumber];
-    } else {
-        firstNumber = Number(firstNumber);
-    }
-
-    let lastNumber = matches[matches.length - 1];
-
-    if (lastNumber in wordToDigit) {
-        lastNumber = wordToDigit[lastNumber];
-    } else {
-        lastNumber = Number(lastNumber);
-    }
-
-    let calibratedNumber = Number(firstNumber.toString().concat(lastNumber.toString()));
-
-    console.log(matches);
-    console.log(calibratedNumber);
-    sum += calibratedNumber;
+    return getNumsFromRawData().reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    }, 0);
 }
 
-console.log(sum);
+function getNumsFromRawData() {
+
+    return lines.map(line => Number(getEachLineNumber(line)));
+
+}
+
+function getEachLineNumber(line) {
+    
+    let wordToDigit = {
+        "one": "1",
+        "two": "2",
+        "three": "3",
+        "four": "4",
+        "five": "5",
+        "six": "6",
+        "seven": "7",
+        "eight": "8",
+        "nine": "9"
+    };
+
+    return Number(getFirstNumber(line, wordToDigit).concat(getLastNumber(line, wordToDigit)))
+
+}
+
+function getFirstNumber(line, wordToDigit){
+
+        let firstNumber = Array.from(line.matchAll(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/g), (match) => match[1])[0]
+
+        return firstNumber in wordToDigit ? firstNumber = wordToDigit[firstNumber] : firstNumber = firstNumber;
+
+}
+
+function getLastNumber(line, wordToDigit){
+
+    let lastNumber = Array.from(line.matchAll(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/g), (match) => match[1]).slice(-1)
+
+    return lastNumber in wordToDigit ? lastNumber = wordToDigit[lastNumber] : lastNumber = lastNumber;
+}

@@ -17,16 +17,11 @@ const maxCubes = {
 }
 
 console.log(getPossibleGamesIdSum())
+
 function getPossibleGamesIdSum() {
-    let sum = 0;
-    console.log(getPossibleGames());
-    // return getPossibleGames().reduce((accumulator, currentValue) => {
-    //     return accumulator + currentValue;
-    // }, 0);
-    for (game of getPossibleGames()){
-        sum+=game;
-    }
-    return sum
+    return getPossibleGames().reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    }, 0);
 }
 
 

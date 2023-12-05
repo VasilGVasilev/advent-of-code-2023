@@ -17,7 +17,14 @@ function getEachLine(line, index, array) {
     let regex = /\d{2,3}/g;
     const LINELENGTH = line.length;
     let digitsAndIndicesOnLine = getLineDigitsAndIndices(regex, line); //digits are still strings
-    let validDigitsOnLine = isDigitValid(digitsAndIndicesOnLine, line, index, array);
+
+    if(Object.keys(digitsAndIndicesOnLine).length > 0){
+        for(digit in digitsAndIndicesOnLine){
+            isDigitValid(digit, line, index, array)
+        }
+    }
+
+    
     return line;
 }
 
@@ -26,19 +33,18 @@ function getLineDigitsAndIndices(regex, line) {
 
     
     let indicesOfMatches = [];
+    let matchesAndIndicesOnLine = {};
     
     if(matches !== null){
         for (let match of matches){
             indicesOfMatches.push(line.indexOf(match));
         }
-    
-        let matchesAndIndicesOnLine = {
-            matches,
-            indicesOfMatches
-        }
-        console.log(matchesAndIndicesOnLine);
-        return matchesAndIndicesOnLine;
+        matchesAndIndicesOnLine.matches = matches;
+        matchesAndIndicesOnLine.indicesOfMatches = indicesOfMatches;
+
     }
+    return matchesAndIndicesOnLine;
+
     // console.log(matchesAndIndicesOnLine)
     // console.log(line.indexOf(matches[0]));
     // console.log(array[index-1], array[index+1]);
@@ -46,9 +52,8 @@ function getLineDigitsAndIndices(regex, line) {
 
 function isDigitValid(digitsAndIndicesOnLine, line, index, array){
     console.log(index);
-    for (digitObj in digitsAndIndicesOnLine){
-        
-    }
+
+    // return valid digit
 }
 
 getAllLines()

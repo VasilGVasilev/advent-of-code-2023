@@ -14,15 +14,41 @@ function getAllLines() {
 }
 
 function getEachLine(line, index, array) {
-    let regex = /\d{3}/g;
+    let regex = /\d{2,3}/g;
     const LINELENGTH = line.length;
-    let allDigitsOnLine = getLineDigits(regex, line, index, array);
+    let digitsAndIndicesOnLine = getLineDigitsAndIndices(regex, line); //digits are still strings
+    let validDigitsOnLine = isDigitValid(digitsAndIndicesOnLine, line, index, array);
     return line;
 }
 
-function getLineDigits(regex, line, index, array) {
+function getLineDigitsAndIndices(regex, line) {
     let matches = line.match(regex);
-    console.log(array[index-1], array[index+1]);
+
+    
+    let indicesOfMatches = [];
+    
+    if(matches !== null){
+        for (let match of matches){
+            indicesOfMatches.push(line.indexOf(match));
+        }
+    
+        let matchesAndIndicesOnLine = {
+            matches,
+            indicesOfMatches
+        }
+        console.log(matchesAndIndicesOnLine);
+        return matchesAndIndicesOnLine;
+    }
+    // console.log(matchesAndIndicesOnLine)
+    // console.log(line.indexOf(matches[0]));
+    // console.log(array[index-1], array[index+1]);
 }
 
-console.log(getAllLines());
+function isDigitValid(digitsAndIndicesOnLine, line, index, array){
+    console.log(index);
+    for (digitObj in digitsAndIndicesOnLine){
+        
+    }
+}
+
+getAllLines()

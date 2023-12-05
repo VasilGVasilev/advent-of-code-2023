@@ -55,6 +55,7 @@ function isDigitValid(digit, line, index, array){
     let digitLength = digitValue.length;
     let digitIndex = Object.values(digit)[0];
     let numberIsValid = false;
+    let regexSymbol = /[^a-zA-Z0-9.]/g;
     
     // digit is valid:
     // if surrounded by symbols on same line
@@ -62,12 +63,12 @@ function isDigitValid(digit, line, index, array){
     
 
     // if symobol is present within -1/+1 of its lenght on upper or lower line
-    numberIsValid = validityOnUpperLine(line, digitValue, digitIndex, digitLength, index);
+    numberIsValid = validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol);
 
-    // return validityOnLowerLine(line, digitValue, digitIndex, digitLength, index);
+    numberIsValid = validityOnLowerLine(digitValue, digitIndex, digitLength, index, array, regexSymbol);
 
     if(numberIsValid){
-        return 222
+        return numberIsValid;
     } else {
         return 0;
     }
@@ -84,16 +85,41 @@ function validityOnSameLine(line, digitValue, digitIndex, digitLength){
 
 }
 
-function validityOnUpperLine(line, digitValue, digitIndex, digitLength, index){
+function validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol){
+    let lineAbove = array[index - 1];
+    console.log(lineAbove)
     if(index > 0){
-        console.log('ee');
+        let matchedSymbol = lineAbove.match(regexSymbol);
+        if(matchedSymbol){
+            let matchedSymbolIndex = lineAbove.indexOf(matchedSymbol);
+            if(digitIndex - 1 >= matchedSymbolIndex && digitIndex + digitLength <= matchedSymbolIndex){
+                return digitValue;
+            } else {
+                return false;
+            }
+        }
+        // console.log(array[index + 1]);
     }
 }
 
-function validityOnLowerLine(line, digitValue, digitIndex, digitLength, index){
+function validityOnLowerLine(digitValue, digitIndex, digitLength, index, array, regexSymbol){
+    let lineBelow = array[index + 1];
+    console.log(lineBelow)
+
     if(index < lines.lenght){
-        console.log('ee');
+        console.log(lineBelow);
+        let matchedSymbol = lineBelow.match(regexSymbol);
+        if(matchedSymbol){
+            let matchedSymbolIndex = lineBelow.indexOf(matchedSymbol);
+            if(digitIndex - 1 >= matchedSymbolIndex && digitIndex + digitLength <= matchedSymbolIndex){
+                return digitValue;
+            } else {
+                return false;
+            }
+        }
+        // console.log(array[index + 1]);
     }
 }
+
 
 getAllLines()

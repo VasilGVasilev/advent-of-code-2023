@@ -15,14 +15,16 @@ function getAllLines() {
 
 function getEachLine(line, index, array) {
     let regex = /\d{2,3}/g;
-    const LINELENGTH = line.length;
     let digitsAndIndicesOnLine = getLineDigitsAndIndices(regex, line); //digits are still strings
-
+    let validDigitsOnLine = [];
     if(Object.keys(digitsAndIndicesOnLine).length > 0){
-        for(digit in digitsAndIndicesOnLine){
-            isDigitValid(digit, line, index, array)
+        // digit is an object with matches and indicesOfMatches
+        for(digit of digitsAndIndicesOnLine){
+            validDigitsOnLine.push(isDigitValid(digit, line, index, array));
+            // validDigitsOnLine.push(isDigitValid(digit, line, index, array));
         }
     }
+    console.log(validDigitsOnLine);
 
     
     return line;
@@ -31,16 +33,12 @@ function getEachLine(line, index, array) {
 function getLineDigitsAndIndices(regex, line) {
     let matches = line.match(regex);
 
-    
-    let indicesOfMatches = [];
-    let matchesAndIndicesOnLine = {};
+    let matchesAndIndicesOnLine = [];
     
     if(matches !== null){
         for (let match of matches){
-            indicesOfMatches.push(line.indexOf(match));
+            matchesAndIndicesOnLine.push({[match]: line.indexOf(match)})
         }
-        matchesAndIndicesOnLine.matches = matches;
-        matchesAndIndicesOnLine.indicesOfMatches = indicesOfMatches;
 
     }
     return matchesAndIndicesOnLine;
@@ -50,10 +48,52 @@ function getLineDigitsAndIndices(regex, line) {
     // console.log(array[index-1], array[index+1]);
 }
 
-function isDigitValid(digitsAndIndicesOnLine, line, index, array){
-    console.log(index);
+function isDigitValid(digit, line, index, array){
 
-    // return valid digit
+    // const LINELENGTH = line.length;
+    let digitValue = Object.keys(digit)[0];
+    let digitLength = digitValue.length;
+    let digitIndex = Object.values(digit)[0];
+    let numberIsValid = false;
+    
+    // digit is valid:
+    // if surrounded by symbols on same line
+    numberIsValid = validityOnSameLine(line, digitValue, digitIndex, digitLength);
+    
+
+    // if symobol is present within -1/+1 of its lenght on upper or lower line
+    numberIsValid = validityOnUpperLine(line, digitValue, digitIndex, digitLength, index);
+
+    // return validityOnLowerLine(line, digitValue, digitIndex, digitLength, index);
+
+    if(numberIsValid){
+        return 222
+    } else {
+        return 0;
+    }
+}
+
+function validityOnSameLine(line, digitValue, digitIndex, digitLength){
+
+
+    if(line[digitIndex - 1] !== '.' && line[digitIndex - 1] !== undefined || line[digitIndex + digitLength] !== '.' && line[digitIndex + digitLength] !== undefined ){
+        return digitValue;
+    } else {
+        return false;
+    }
+
+}
+
+function validityOnUpperLine(line, digitValue, digitIndex, digitLength, index){
+    if(index > 0){
+        console.log('ee');
+    }
+}
+
+function validityOnLowerLine(line, digitValue, digitIndex, digitLength, index){
+    if(index < lines.lenght){
+        console.log('ee');
+    }
 }
 
 getAllLines()

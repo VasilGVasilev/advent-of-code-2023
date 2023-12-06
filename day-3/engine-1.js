@@ -63,11 +63,11 @@ function isDigitValid(digit, line, index, array) {
     let digitLength = digitValue.length;
     let digitIndex = Object.values(digit)[0];
     let numberIsValid;
-    let regexSymbol = /[^a-zA-Z0-9.]/g;
+    let regexSymbol = /[^a-zA-Z0-9.]/g; //any symbol other than . 
 
     // digit is valid:
     // if surrounded by symbols on same line
-    numberIsValid = validityOnSameLine(line, digitValue, digitIndex, digitLength);
+    numberIsValid = validityOnSameLine(index, array, regexSymbol, line, digitValue, digitIndex, digitLength);
 
 
     // if symobol is present within -1/+1 of its lenght on upper or lower line
@@ -95,33 +95,75 @@ function isDigitValid(digit, line, index, array) {
     }
 }
 
-function validityOnSameLine(line, digitValue, digitIndex, digitLength) {
+function validityOnSameLine(index, array, regexSymbol, line, digitValue, digitIndex, digitLength) {
 
-    let regexSymbol = /[^a-zA-Z0-9.]/g;
-    let symbolBeforeDigit = line[digitIndex - 1];
-    let symbolAfterDigit = line[digitIndex + digitLength];
+    // DEMO WORKS
+    // let symbolBeforeDigit = line[digitIndex - 1];
+    // let symbolAfterDigit = line[digitIndex + digitLength];
 
-    console.log( line[digitIndex - 2], line[digitIndex - 1], digitValue);
-    if (line[digitIndex - 1] !== '.' && line[digitIndex - 1] !== undefined || line[digitIndex + digitLength] !== '.' && line[digitIndex + digitLength] !== undefined) {
-        return digitValue;
-    } else {
-        return 0;
+    // if (line[digitIndex - 1] !== '.' && line[digitIndex - 1] !== undefined || line[digitIndex + digitLength] !== '.' && line[digitIndex + digitLength] !== undefined) {
+    //     return digitValue;
+    // } else {
+    //     return 0;
+    // }
+
+    // DEMO NO LONGER WORKS
+    let currentLine = line;
+    let matchedSymbol;
+
+    // we need indices, not only the actual numbers
+    let matchSymbolArr = [];
+    while ((matchedSymbol = regexSymbol.exec(currentLine)) !== null) {
+        let index = matchedSymbol.index;
+        let value = matchedSymbol[0];
+        matchSymbolArr.push({[value] : index});
     }
+    console.log(matchSymbolArr);
 
+    // indices used to ascertain the position of possibly valid digits
+    if (matchSymbolArr.length > 0) {
+        for (let matchedSymbolInstance of matchSymbolArr) {
+
+            let symbolIndex = Object.values(matchedSymbolInstance)[0]
+            let startOfCheckingField = digitIndex - 1 < 0 ? digitIndex : (digitIndex - 1);
+            let endOfCheckingField = (digitIndex + digitLength) === array[index].length ? (digitIndex + digitLength) : (digitIndex + digitLength + 1);
+            if(startOfCheckingField === 0){
+                if (endOfCheckingField === symbolIndex){
+                    return digitValue;
+                }
+            } else if (startOfCheckingField > 0){
+                if ((startOfCheckingField - 1) === symbolIndex || endOfCheckingField === symbolIndex){
+                    return digitValue;
+                }
+            }
+            if(endOfCheckingField === array[index].length){
+                if ((startOfCheckingField - 1) === symbolIndex){
+                    return digitValue;
+                }
+            } else if (endOfCheckingField < array[index].length){
+                if (endOfCheckingField === symbolIndex || (startOfCheckingField - 1) === symbolIndex){
+                    return digitValue;
+                }
+            }
+        }
+    }
 }
 
 function validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol) {
 
     let lineAbove = array[index - 1];
     
-    // let matchedSymbol = regexSymbol.exec(lineAbove);
     let matchedSymbol;
+
+    // we need indices, not only the actual numbers
     let matchSymbolArr = [];
     while ((matchedSymbol = regexSymbol.exec(lineAbove)) !== null) {
         let index = matchedSymbol.index;
         let value = matchedSymbol[0];
         matchSymbolArr.push({[value] : index});
     }
+
+    // indices used to ascertain the position of possibly valid digits
     if (matchSymbolArr.length > 0) {
         for (let matchedSymbolInstance of matchSymbolArr) {
 

@@ -22,7 +22,7 @@ function getAllLinesNumbers() {
 }
 
 function getEachLine(line, index, array) {
-    let regex = /\d{2,3}/g;
+    let regex = /(?:[^\d]|^)\d{1,3}(?:[^\d]|$)/g;
     let digitsAndIndicesOnLine = getLineDigitsAndIndices(regex, line); //digits are still strings
     let validDigitsOnLine = [];
     if (Object.keys(digitsAndIndicesOnLine).length > 0) {
@@ -38,13 +38,15 @@ function getEachLine(line, index, array) {
 }
 
 function getLineDigitsAndIndices(regex, line) {
-    let matches = line.match(regex);
+    let lineCopy = line; //regex consumes the elements, so anti-pattern, but works
+    let matches = lineCopy.match(regex);
 
     let matchesAndIndicesOnLine = [];
 
     if (matches !== null) {
         for (let match of matches) {
-            matchesAndIndicesOnLine.push({ [match]: line.indexOf(match) })
+            let number = match.match(/\d{1,3}/g);
+            matchesAndIndicesOnLine.push({ [number]: line.indexOf(match) })
         }
 
     }
@@ -61,12 +63,12 @@ function isDigitValid(digit, line, index, array) {
     let digitValue = Object.keys(digit)[0];
     let digitLength = digitValue.length;
     let digitIndex = Object.values(digit)[0];
-    let numberIsValid = false;
+    let numberIsValid;
     let regexSymbol = /[^a-zA-Z0-9.]/g;
 
     // digit is valid:
     // if surrounded by symbols on same line
-    numberIsValid = validityOnSameLine(line, digitValue, digitIndex, digitLength);
+    numberIsValid = validityOnSameLine(digit, line, digitValue, digitIndex, digitLength);
 
 
     // if symobol is present within -1/+1 of its lenght on upper or lower line
@@ -94,9 +96,13 @@ function isDigitValid(digit, line, index, array) {
     }
 }
 
-function validityOnSameLine(line, digitValue, digitIndex, digitLength) {
+function validityOnSameLine(digit, line, digitValue, digitIndex, digitLength) {
 
+    let regexSymbol = /[^a-zA-Z0-9.]/g;
+    let symbolBeforeDigit = line[digitIndex - 1];
+    let symbolAfterDigit = line[digitIndex + digitLength];
 
+    console.log( digit, line[digitIndex - 1], digitValue);
     if (line[digitIndex - 1] !== '.' && line[digitIndex - 1] !== undefined || line[digitIndex + digitLength] !== '.' && line[digitIndex + digitLength] !== undefined) {
         return digitValue;
     } else {
@@ -108,16 +114,22 @@ function validityOnSameLine(line, digitValue, digitIndex, digitLength) {
 function validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol) {
 
     let lineAbove = array[index - 1];
-    let matchedSymbol = lineAbove.match(regexSymbol);
+    
+    // let matchedSymbol = regexSymbol.exec(lineAbove);
+    let matchedSymbol;
+    let matchSymbolArr = [];
+    while ((matchedSymbol = regexSymbol.exec(lineAbove)) !== null) {
+        let index = matchedSymbol.index;
+        let value = matchedSymbol[0];
+        matchSymbolArr.push({[value] : index});
+    }
+    if (matchSymbolArr.length > 0) {
+        for (let matchedSymbolInstance of matchSymbolArr) {
 
-    if (matchedSymbol) {
-        for (let matchedSymbolInstance of matchedSymbol) {
-
-            let matchedSymbolIndex = lineAbove.indexOf(matchedSymbolInstance);
-
+            let symbol = Object.values(matchedSymbolInstance)[0]
             let startOfCheckingField = digitIndex - 1 < 0 ? digitIndex : (digitIndex - 1);
             let endOfCheckingField = (digitIndex + digitLength) === array[index].length ? (digitIndex + digitLength) : (digitIndex + digitLength + 1);
-            if (startOfCheckingField <= matchedSymbolIndex && endOfCheckingField >= matchedSymbolIndex) {
+            if (startOfCheckingField <= symbol && endOfCheckingField >= symbol) {
                 return digitValue;
             } 
         }
@@ -125,15 +137,26 @@ function validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, 
 }
 
 function validityOnLowerLine(digitValue, digitIndex, digitLength, index, array, regexSymbol) {
-    let lineBelow = array[index + 1];
-    let matchedSymbol = lineBelow.match(regexSymbol);
-    if (matchedSymbol) {
-        for (let matchedSymbolInstance of matchedSymbol) {
-            let matchedSymbolIndex = lineBelow.indexOf(matchedSymbolInstance);
+
+
+
+    let lineAbove = array[index + 1];
+    
+    // let matchedSymbol = regexSymbol.exec(lineAbove);
+    let matchedSymbol;
+    let matchSymbolArr = [];
+    while ((matchedSymbol = regexSymbol.exec(lineAbove)) !== null) {
+        let index = matchedSymbol.index;
+        let value = matchedSymbol[0];
+        matchSymbolArr.push({[value] : index});
+    }
+    if (matchSymbolArr.length > 0) {
+        for (let matchedSymbolInstance of matchSymbolArr) {
+
+            let symbol = Object.values(matchedSymbolInstance)[0]
             let startOfCheckingField = digitIndex - 1 < 0 ? digitIndex : (digitIndex - 1);
             let endOfCheckingField = (digitIndex + digitLength) === array[index].length ? (digitIndex + digitLength) : (digitIndex + digitLength + 1);
-
-            if (startOfCheckingField <= matchedSymbolIndex && endOfCheckingField >= matchedSymbolIndex) {
+            if (startOfCheckingField <= symbol && endOfCheckingField >= symbol) {
                 return digitValue;
             } 
         }

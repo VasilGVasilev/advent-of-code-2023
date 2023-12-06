@@ -22,7 +22,7 @@ function getAllLinesNumbers() {
 }
 
 function getEachLine(line, index, array) {
-    let regex = /(?:[^\d]|^)\d{1,3}(?:[^\d]|$)/g;
+    let regex = /\d{1,3}/g;
     let digitsAndIndicesOnLine = getLineDigitsAndIndices(regex, line); //digits are still strings
     let validDigitsOnLine = [];
     if (Object.keys(digitsAndIndicesOnLine).length > 0) {
@@ -45,8 +45,7 @@ function getLineDigitsAndIndices(regex, line) {
 
     if (matches !== null) {
         for (let match of matches) {
-            let number = match.match(/\d{1,3}/g);
-            matchesAndIndicesOnLine.push({ [number]: line.indexOf(match) })
+            matchesAndIndicesOnLine.push({ [match]: line.indexOf(match) })
         }
 
     }
@@ -68,7 +67,7 @@ function isDigitValid(digit, line, index, array) {
 
     // digit is valid:
     // if surrounded by symbols on same line
-    numberIsValid = validityOnSameLine(digit, line, digitValue, digitIndex, digitLength);
+    numberIsValid = validityOnSameLine(line, digitValue, digitIndex, digitLength);
 
 
     // if symobol is present within -1/+1 of its lenght on upper or lower line
@@ -96,13 +95,13 @@ function isDigitValid(digit, line, index, array) {
     }
 }
 
-function validityOnSameLine(digit, line, digitValue, digitIndex, digitLength) {
+function validityOnSameLine(line, digitValue, digitIndex, digitLength) {
 
     let regexSymbol = /[^a-zA-Z0-9.]/g;
     let symbolBeforeDigit = line[digitIndex - 1];
     let symbolAfterDigit = line[digitIndex + digitLength];
 
-    console.log( digit, line[digitIndex - 1], digitValue);
+    console.log( line[digitIndex - 2], line[digitIndex - 1], digitValue);
     if (line[digitIndex - 1] !== '.' && line[digitIndex - 1] !== undefined || line[digitIndex + digitLength] !== '.' && line[digitIndex + digitLength] !== undefined) {
         return digitValue;
     } else {

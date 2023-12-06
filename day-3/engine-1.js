@@ -9,7 +9,15 @@ const lines = fs.readFileSync('input.txt', { encoding: 'utf-8' }).split('\r\n');
 // check if they have symbols around them
 // check if they have symbols within their stretch of the line ex. -234- you need to check on neighbour lines indices 0,1,2,3,4  
 
-function getAllLines() {
+function getSumOfNumbers() {
+    console.log(getAllLinesNumbers());
+    return getAllLinesNumbers().reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+    );
+}
+
+function getAllLinesNumbers() {
     return lines.map((line, index, array) => getEachLine(line, index, array)).flat();
 }
 
@@ -64,20 +72,23 @@ function isDigitValid(digit, line, index, array) {
     // if symobol is present within -1/+1 of its lenght on upper or lower line
 
 
-    if (numberIsValid) {
-        return numberIsValid;
+    if (numberIsValid > 0) {
+        return Number(numberIsValid);
     } else {
-        numberIsValid = validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol);
-
-        if(numberIsValid){
-            return numberIsValid;
+        if (index > 0) {
+            numberIsValid = validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol);
+            if (numberIsValid) {
+                return Number(numberIsValid);
+            }
         }
 
-        numberIsValid = validityOnLowerLine(digitValue, digitIndex, digitLength, index, array, regexSymbol);
-
-        if(numberIsValid){
-            return numberIsValid;
+        if (index + 1 < array.length) {
+            numberIsValid = validityOnLowerLine(digitValue, digitIndex, digitLength, index, array, regexSymbol);
+            if (numberIsValid) {
+                return Number(numberIsValid);
+            }
         }
+
 
         return 0;
     }
@@ -89,41 +100,45 @@ function validityOnSameLine(line, digitValue, digitIndex, digitLength) {
     if (line[digitIndex - 1] !== '.' && line[digitIndex - 1] !== undefined || line[digitIndex + digitLength] !== '.' && line[digitIndex + digitLength] !== undefined) {
         return digitValue;
     } else {
-        return false;
+        return 0;
     }
 
 }
 
 function validityOnUpperLine(digitValue, digitIndex, digitLength, index, array, regexSymbol) {
-    
-    if (index > 0) {
-        let lineAbove = array[index - 1];
-        let matchedSymbol = lineAbove.match(regexSymbol);
-        if (matchedSymbol) {
-            let matchedSymbolIndex = lineAbove.indexOf(matchedSymbol);
-            if (digitIndex - 1 >= matchedSymbolIndex && digitIndex + digitLength <= matchedSymbolIndex) {
+
+    let lineAbove = array[index - 1];
+    let matchedSymbol = lineAbove.match(regexSymbol);
+
+    if (matchedSymbol) {
+        for (let matchedSymbolInstance of matchedSymbol) {
+
+            let matchedSymbolIndex = lineAbove.indexOf(matchedSymbolInstance);
+
+            let startOfCheckingField = digitIndex - 1 < 0 ? digitIndex : (digitIndex - 1);
+            let endOfCheckingField = (digitIndex + digitLength) === array[index].length ? (digitIndex + digitLength) : (digitIndex + digitLength + 1);
+            if (startOfCheckingField <= matchedSymbolIndex && endOfCheckingField >= matchedSymbolIndex) {
                 return digitValue;
-            } else {
-                return 0;
-            }
+            } 
         }
     }
 }
 
 function validityOnLowerLine(digitValue, digitIndex, digitLength, index, array, regexSymbol) {
-    if (index + 1 < array.length) {
-        let lineBelow = array[index + 1];
-        let matchedSymbol = lineBelow.match(regexSymbol);
-        if (matchedSymbol) {
-            let matchedSymbolIndex = lineBelow.indexOf(matchedSymbol);
-            if (digitIndex - 1 >= matchedSymbolIndex && digitIndex + digitLength <= matchedSymbolIndex) {
+    let lineBelow = array[index + 1];
+    let matchedSymbol = lineBelow.match(regexSymbol);
+    if (matchedSymbol) {
+        for (let matchedSymbolInstance of matchedSymbol) {
+            let matchedSymbolIndex = lineBelow.indexOf(matchedSymbolInstance);
+            let startOfCheckingField = digitIndex - 1 < 0 ? digitIndex : (digitIndex - 1);
+            let endOfCheckingField = (digitIndex + digitLength) === array[index].length ? (digitIndex + digitLength) : (digitIndex + digitLength + 1);
+
+            if (startOfCheckingField <= matchedSymbolIndex && endOfCheckingField >= matchedSymbolIndex) {
                 return digitValue;
-            } else {
-                return 0;
-            }
+            } 
         }
     }
 }
 
 
-console.log(getAllLines())
+console.log(getSumOfNumbers())

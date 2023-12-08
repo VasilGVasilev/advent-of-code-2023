@@ -20,6 +20,6 @@ for block in blocks:
                 break
         else:
             new.append(seed)
-    values = new
+    seeds = new
 
-print(min(values))
+print(min(seeds))

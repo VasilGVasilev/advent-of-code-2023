@@ -9,7 +9,17 @@ for block in blocks:
     # remove the title line of each block
     for line in block.splitlines()[1:]:
         # take each of the three nums on line
-        a, b, c = map(int, line.split())
-        ranges.append((a, b, c))
-        
-    print(ranges)
+        ranges.append(list(map(int, line.split())))
+    # map over seeds but not manipulate directly
+    new = []
+    for seed in seeds:
+        for a, b, c in ranges:
+            if b <= seed < b + c:
+                # offset of the seed from the rangeStart is to be added to the destination
+                new.append(seed - b + a)
+                break
+        else:
+            new.append(seed)
+    values = new
+
+print(min(values))

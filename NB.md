@@ -12,3 +12,14 @@ for x in range(6):
 else:
   print("Finally finished!") 
 ```
+
+
+5. Unlike some languages like JavaScript, where function declarations are hoisted to the top of their scope, Python requires functions to be defined before they are called.
+
+```sh
+# This will raise an error
+baz()
+
+def baz():
+    print("Hello from baz!")
+```

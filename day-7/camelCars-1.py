@@ -34,4 +34,9 @@ for line in open(0):
 # sorts number first (rank based on type), sorts list second (if hands have same rank)
 plays.sort(key = lambda play: strength(play[0]))
 
-print(plays)
+total = 0
+
+for rank, (hand, bid) in enumerate(plays, 1):
+    total += rank * bid
+
+print(total)

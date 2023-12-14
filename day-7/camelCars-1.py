@@ -2,8 +2,14 @@
 
 letter_map = {"T": "A", "J": "B", "Q": "C", "K": "D", "A": "E"}
 
+
+def classify(hand):
+    counts = [hand.count(card) for card in hand]
+    return counts
+print(classify("AABB44"))
+
 def strength(hand):
-    return (type(hand), [letter_map.get(char, char) for char in hand])
+    return (classify(hand), [letter_map.get(char, char) for char in hand])
 
 plays = []
 

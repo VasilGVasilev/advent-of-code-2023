@@ -60,3 +60,13 @@ print(result) # Output: ['A', 'B', 'C', 'd']
 
 ```
 As you can see, both the for loop and the list comprehension produce the same result. However, the list comprehension is more concise and considered more "Pythonic" 2, 
+
+9. .count() in Python comes in handy very we want to know how often does each element appear in a list, MIND that in day-7 we are looking at each hand's cards so list comprehension again:
+
+```sh
+points = [1, 4, 2, 9, 7, 8, 9, 3, 1]
+
+x = points.count(9)
+print(x) 
+# //2
+```

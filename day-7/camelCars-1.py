@@ -3,10 +3,9 @@
 letter_map = {"T": "A", "J": "B", "Q": "C", "K": "D", "A": "E"}
 
 def strength(hand):
-    return (type(hand), hand)
+    return (type(hand), [letter_map.get(char, char) for char in hand])
 
 plays = []
-
 
 
 for line in open(0):

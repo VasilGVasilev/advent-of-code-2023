@@ -39,3 +39,24 @@ print(x(5))
 ```sh
 plays.sort(key = lambda play: strength(play[0])])
 ```
+
+8. List comprehension:
+
+```sh
+letter_map = {'a': 'A', 'b': 'B', 'c': 'C'}
+hand = ['a', 'b', 'c', 'd']
+
+# Using a for loop
+result = []
+for char in hand:
+   result.append(letter_map.get(char, char))
+
+print(result) # Output: ['A', 'B', 'C', 'd']
+
+# Using a list comprehension
+result = [letter_map.get(char, char) for char in hand]
+
+print(result) # Output: ['A', 'B', 'C', 'd']
+
+```
+As you can see, both the for loop and the list comprehension produce the same result. However, the list comprehension is more concise and considered more "Pythonic" 2, 

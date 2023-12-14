@@ -1,5 +1,9 @@
+# we will rely on the ascii logic that number are less than letters and make a dictionary to map the TJQKA to ABCDE
+
+letter_map = {"T": "A", "J": "B", "Q": "C", "K": "D", "A": "E"}
+
 def strength(hand):
-    
+    return (type(hand), hand)
 
 plays = []
 

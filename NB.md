@@ -70,3 +70,29 @@ x = points.count(9)
 print(x) 
 # //2
 ```
+
+10. sort in Python is pretty smart - The sort() function sorts the tuples based on the first element of the tuple (the number), and in case of a tie, it sorts based on the second element of the tuple (the list):
+
+```sh
+data = [
+   (1, ['3', '2', 'A', '3', 'D']),
+   (3, ['A', '5', '5', 'B', '5']),
+   (2, ['D', 'D', '6', '7', '7']),
+   (2, ['D', 'A', 'B', 'B', 'A']),
+   (3, ['C', 'C', 'C', 'B', 'E'])
+]
+
+# Sort the list of tuples
+data.sort()
+
+print(data)
+```
+Output will be:
+[
+   (1, ['3', '2', 'A', '3', 'D']),
+   (2, ['D', 'D', '6', '7', '7']),
+   (2, ['D', 'A', 'B', 'B', 'A']),
+   (3, ['A', '5', '5', 'B', '5']),
+   (3, ['C', 'C', 'C', 'B', 'E'])
+]
+

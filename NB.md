@@ -23,3 +23,19 @@ baz()
 def baz():
     print("Hello from baz!")
 ```
+
+6. lambda in Python
+
+```sh
+lambda arguments : expression
+
+x = lambda a : a + 10
+print(x(5))
+
+```
+
+7. in day-7 we have a sort which accepts a key args that is a function and I choose this function to be a lambda and this lambda goes through each play by applying the strength custom function which accepts the play[0] arg
+
+```sh
+plays.sort(key = lambda play: strength(play[0])])
+```

@@ -4,7 +4,7 @@
 
 3. Python has an .open() built-in function that reads a stream, you initiate it with 'type file.txt | python file.py' in windows
 
-4. The else keyword in a for loop specifies a block of code to be executed when the loop is finished:
+4. The else keyword in a for loop in Python specifies a block of code to be executed when the loop is finished:
 
 ```sh
 for x in range(6):

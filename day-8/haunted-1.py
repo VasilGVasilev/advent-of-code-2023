@@ -5,11 +5,19 @@ lines = [x for x in lines if x != ''] # sanitize data
 directions = list(lines[0])
 
 nodes = lines[1:]
-nodesAsSteps = list(map(lambda e: e[:3], lines[1:]))
+nodesAsSteps = list(map(lambda e: e[:3], nodes))
+eachNodeDirections = list(map(lambda e: e[7:-1], nodes))
+
 print(nodesAsSteps)
 
 
+stepsDictionary = {} # Empty dictionary to add values into
 
+for index, value in enumerate(nodesAsSteps):
+   stepsDictionary[nodesAsSteps[index]] = eachNodeDirections[index]
+
+print(stepsDictionary)
+exit(0)
 def steps(directions, nodes, nodesAsSteps):
     totalSteps = 0
     fieldWeAreOn = 'AAA'

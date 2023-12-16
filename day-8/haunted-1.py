@@ -8,26 +8,23 @@ nodes = lines[1:]
 nodesAsSteps = list(map(lambda e: e[:3], nodes))
 eachNodeDirections = list(map(lambda e: e[7:-1], nodes))
 
-print(nodesAsSteps)
-
-
 stepsDictionary = {} # Empty dictionary to add values into
 
 for index, value in enumerate(nodesAsSteps):
    stepsDictionary[nodesAsSteps[index]] = eachNodeDirections[index]
 
 print(stepsDictionary)
-exit(0)
+
 def steps(directions, nodes, nodesAsSteps):
     totalSteps = 0
-    fieldWeAreOn = 'AAA'
+    startingField = nodesAsSteps[0]
+    fieldWeAreOn = ''
 
     while True:
         if fieldWeAreOn != 'ZZZ':
             for turn in directions:
-
+                fieldWeAreOn = startingField
                 possibleMoves = nodes.split(' = ')[1]
-                fieldWeAreOn = nodesAsSteps.split(' = ')[0]
                 leftOrRight = possibleMoves[1:-1].split(', ')
                 leftDir = leftOrRight[0]
                 rightDir = leftOrRight[1]

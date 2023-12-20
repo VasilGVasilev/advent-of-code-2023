@@ -96,3 +96,34 @@ Output will be:
    (3, ['C', 'C', 'C', 'B', 'E'])
 ]
 
+11. all() in Python - The all() function returns True if all items in an iterable are true, otherwise it returns False.
+
+12. Generator expression in Python - high perforamce and memory efficient way of iterating, instead of regular array where you need the use of variables to check if a values is specific, you use the generator:
+
+instead of:
+```sh
+array = [0, 0, 0, 0, 0]
+all_zero = True
+for x in array:
+   if x != 0:
+       all_zero = False
+       break
+print(all_zero) # Outputs: True
+```
+
+do this:
+
+```sh
+array = [0, 0, 0, 0, 0]
+print(all(x == 0 for x in array)) # Outputs: True
+```
+
+13. zip() in python - returns array by pairing their element by their indices:
+
+```sh
+zip([1, 2, 3], [4, 5, 6])
+
+# [1, 4]
+# [2, 5]
+# [3, 6]
+```

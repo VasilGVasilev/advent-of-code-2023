@@ -118,7 +118,7 @@ array = [0, 0, 0, 0, 0]
 print(all(x == 0 for x in array)) # Outputs: True
 ```
 
-13. zip() in python - returns array by pairing their element by their indices:
+13. zip() in Python - returns array by pairing their element by their indices:
 
 ```sh
 zip([1, 2, 3], [4, 5, 6])
